@@ -3582,7 +3582,7 @@ data "template_file" "goat_script" {
   depends_on = [aws_s3_bucket.bucket_temp]
 }
 
-
+/*
 data "aws_ami" "goat_ami" {
   most_recent = true
   filter {
@@ -3595,9 +3595,11 @@ data "aws_ami" "goat_ami" {
   }
   owners = ["amazon"]
 }
+*/
 
 resource "aws_instance" "goat_instance" {
-  ami                  = data.aws_ami.goat_ami.id
+  #	ami                  = data.aws_ami.goat_ami.id
+  ami = "ami-0c55b159cbfafe1f0"
   instance_type        = "t2.micro"
   iam_instance_profile = aws_iam_instance_profile.goat_iam_profile.name
   subnet_id            = aws_subnet.goat_subnet.id
