@@ -3194,10 +3194,10 @@ locals {
 resource "aws_s3_bucket" "bucket_upload" {
   bucket        = "production-blog-awsgoat-bucket-${data.aws_caller_identity.current.account_id}"
   force_destroy = true
-  tags = {
+  /*tags = {
     Name        = "Production bucket"
     Environment = "Prod"
-  }
+  }*/
 }
 
 # ACL fixes required for AWS S3 APR 2023 updates.
@@ -3280,10 +3280,10 @@ resource "aws_s3_object" "upload_folder_prod" {
 resource "aws_s3_bucket" "dev" {
   bucket = "dev-blog-awsgoat-bucket-${data.aws_caller_identity.current.account_id}"
 
-  tags = {
+  /*tags = {
     Name        = "Development bucket"
     Environment = "Dev"
-  }
+  }*/
 }
 
 
@@ -3361,10 +3361,10 @@ resource "aws_s3_bucket" "bucket_temp" {
   bucket        = "ec2-temp-bucket-${data.aws_caller_identity.current.account_id}"
   force_destroy = true
 
-  tags = {
+  /*tags = {
     Name        = "Temporary bucket"
     Environment = "Dev"
-  }
+  }*/
 }
 
 # ACL fixes required for AWS S3 APR 2023 updates.
@@ -3419,10 +3419,10 @@ resource "aws_s3_object" "upload_temp_object_2" {
 resource "aws_s3_bucket" "bucket_tf_files" {
   bucket        = "do-not-delete-awsgoat-state-files-${data.aws_caller_identity.current.account_id}"
   force_destroy = true
-  tags = {
+  /*tags = {
     Name        = "Do not delete Bucket"
     Environment = "Dev"
-  }
+  }*/
 }
 
 
@@ -3582,7 +3582,6 @@ data "template_file" "goat_script" {
   depends_on = [aws_s3_bucket.bucket_temp]
 }
 
-/*
 data "aws_ami" "goat_ami" {
   most_recent = true
   filter {
@@ -3595,11 +3594,10 @@ data "aws_ami" "goat_ami" {
   }
   owners = ["amazon"]
 }
-*/
 
 resource "aws_instance" "goat_instance" {
-  #	ami                  = data.aws_ami.goat_ami.id
-  ami = "ami-0c55b159cbfafe1f0"
+  ami                  = data.aws_ami.goat_ami.id
+  #ami = "ami-0c55b159cbfafe1f0"
   instance_type        = "t2.micro"
   iam_instance_profile = aws_iam_instance_profile.goat_iam_profile.name
   subnet_id            = aws_subnet.goat_subnet.id
